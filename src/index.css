@@ -1,0 +1,249 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #07152e;
+  --color-navy-deep: #040b1c;
+  --color-navy-soft: #0e2550;
+  --color-electric: #00d9ff;
+  --color-neon-red: #ff385c;
+  --color-sun: #ffd54a;
+  --color-grape: #a855f7;
+  --font-sans: "Segoe UI", "Trebuchet MS", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #040b1c;
+  color: #ffffff;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+input[type="range"] {
+  accent-color: #00d9ff;
+}
+
+/* Tarjetas y rótulos de neón reutilizados por las pantallas. */
+.neon-panel {
+  background: linear-gradient(180deg, rgba(14, 37, 80, 0.94), rgba(7, 21, 46, 0.96));
+  border: 2px solid rgba(0, 217, 255, 0.55);
+  box-shadow:
+    0 0 28px rgba(0, 217, 255, 0.22),
+    inset 0 0 22px rgba(0, 217, 255, 0.06);
+}
+
+.neon-title {
+  color: #ffffff;
+  text-shadow:
+    0 0 8px rgba(0, 217, 255, 0.9),
+    0 0 26px rgba(0, 217, 255, 0.65),
+    0 0 54px rgba(168, 85, 247, 0.55);
+}
+
+.typing-box {
+  background: rgba(4, 11, 28, 0.92);
+  border: 3px solid #00d9ff;
+  box-shadow:
+    0 0 22px rgba(0, 217, 255, 0.5),
+    inset 0 0 14px rgba(0, 217, 255, 0.12);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+/* Panel de poderes: se compacta cuando la ventana es baja para no tapar la barra superior. */
+.power-panel {
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.power-orb {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.power-orb svg {
+  width: 56%;
+  height: 56%;
+}
+
+.power-count {
+  font-size: 1rem;
+}
+
+@media (min-width: 760px) {
+  .power-orb {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+@media (max-height: 760px) {
+  .power-panel {
+    gap: 0.125rem;
+    padding: 0.25rem;
+  }
+
+  .power-orb {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .power-count {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-height: 560px) {
+  .power-orb {
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+
+  .power-count {
+    font-size: 0.7rem;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes miss-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+    border-color: #ff385c;
+    box-shadow: 0 0 26px rgba(255, 56, 92, 0.75);
+  }
+  20% {
+    transform: translateX(-9px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes heart-lost {
+  0% {
+    transform: scale(1.5);
+    filter: brightness(2);
+  }
+  100% {
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+@keyframes chip-fall {
+  0% {
+    transform: translateY(-12vh);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px currentColor);
+  }
+  50% {
+    filter: drop-shadow(0 0 14px currentColor);
+  }
+}
+
+.anim-fade {
+  animation: fade-in 0.35s ease-out both;
+}
+
+.anim-pop {
+  animation: pop-in 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+@keyframes count-pop {
+  0% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(0.92);
+  }
+}
+
+.anim-count {
+  animation: count-pop 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+.anim-miss {
+  animation: miss-shake 0.32s ease-out;
+}
+
+.anim-heart-lost {
+  animation: heart-lost 0.5s ease-out;
+}
+
+.anim-glow {
+  animation: glow-pulse 1.4s ease-in-out infinite;
+}
+
+.menu-chip {
+  animation: chip-fall linear infinite;
+}
+
+/* Intensidad de animaciones reducida: sin movimiento decorativo en la interfaz. */
+:root[data-effects="reduced"] .menu-chip,
+:root[data-effects="minimal"] .menu-chip {
+  display: none;
+}
+
+:root[data-effects="minimal"] *,
+:root[data-effects="minimal"] *::before,
+:root[data-effects="minimal"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
