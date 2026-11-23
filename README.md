@@ -2,6 +2,8 @@
 
 Juego arcade de mecanografía para navegador. Las palabras caen sobre una ciudad nocturna: escríbelas completas y pulsa **Enter** antes de que toquen la línea roja. Incluye dificultad progresiva, rachas con multiplicador, cuatro poderes, sonido sintetizado y récords guardados en el navegador.
 
+**Jugar en línea:** https://ninjasasin.github.io/lluvia-de-neon/
+
 Todo el arte, el sonido y el código son propios. El nombre se cambia en un solo lugar: `src/config.ts`.
 
 ## Instalar y ejecutar
@@ -23,6 +25,20 @@ Abre la dirección que muestra la terminal (por defecto `http://localhost:5173`)
 | `npm run preview` | Sirve la versión generada en `dist/` |
 
 El juego no usa servicios externos: no hay backend, fuentes remotas ni archivos de audio. Una vez instalado funciona sin conexión.
+
+## Publicación en la web
+
+El juego está publicado con GitHub Pages. Cada vez que se sube un cambio a la rama `main`, GitHub ejecuta las pruebas, compila el proyecto y actualiza la página por sí solo (el proceso está en `.github/workflows/pages.yml` y tarda cerca de un minuto).
+
+Para publicar un cambio:
+
+```bash
+git add -A
+git commit -m "Describe el cambio"
+git push
+```
+
+Los récords y la configuración se guardan en el navegador de cada equipo: no se comparten entre computadores.
 
 ## Cómo se juega
 
