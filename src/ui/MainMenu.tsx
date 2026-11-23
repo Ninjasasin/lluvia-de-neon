@@ -1,4 +1,5 @@
-import { GAME_TAGLINE, GAME_TITLE } from '../config';
+import logoUrl from '../assets/logo-ninjasasin.webp';
+import { GAME_AUTHOR, GAME_TAGLINE, GAME_TITLE } from '../config';
 import { NeonButton } from './controls';
 import { formatNumber } from './format';
 
@@ -53,6 +54,19 @@ export function MainMenu({ bestScore, onPlay, onHowTo, onSettings, onScores }: P
         <NeonButton onClick={onSettings}>Configuración</NeonButton>
         <NeonButton onClick={onScores}>Mejores puntuaciones</NeonButton>
       </nav>
+
+      <figure className="absolute right-3 bottom-3 m-0 sm:right-5 sm:bottom-5">
+        <figcaption className="mb-1 text-right text-[11px] font-bold tracking-[0.2em] text-white/75 uppercase">
+          Creado por <span className="text-white">{GAME_AUTHOR}</span>
+        </figcaption>
+        <img
+          src={logoUrl}
+          alt={`Logo de ${GAME_AUTHOR}: un ninja con katana frente a un sol rojo`}
+          width={1536}
+          height={1024}
+          className="ml-auto block h-auto w-[clamp(112px,17vw,210px)] rounded-xl border-2 border-neon-red/70 shadow-[0_0_18px_rgba(255,56,92,0.45)]"
+        />
+      </figure>
 
       <p className="relative text-base font-semibold text-white/75">
         {bestScore > 0 ? (

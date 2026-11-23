@@ -16,6 +16,11 @@ interface Outcome {
   result: GameResult;
   isRecord: boolean;
   bestScore: number;
+  /** Puesto en la tabla (1 = mejor) y entrada guardada; null si no entró entre las mejores. */
+  position: number | null;
+  entryId: string | null;
+  /** Nombre propuesto: el último que se usó en este navegador. */
+  initialName: string;
 }
 
 interface AppState {
@@ -104,7 +109,8 @@ export default function App() {
   const handleGameOver = useCallback(
     (result: GameResult) => {
       audio.stopMusic();
-      const saved = storage.addScore(result);
+      const lastName = storage.loadLastName();
+      const saved = storage.addScore(result, lastName);
       setScores(saved.entries);
       if (saved.isRecord) window.setTimeout(() => audio.play('record'), 500);
       dispatch({
@@ -113,10 +119,21 @@ export default function App() {
           result,
           isRecord: saved.isRecord,
           bestScore: Math.max(saved.previousBest, result.score),
+          position: saved.rank,
+          entryId: saved.entryId,
+          initialName: lastName,
         },
       });
     },
     [audio, storage],
+  );
+
+  const handleRename = useCallback(
+    (entryId: string, name: string) => {
+      setScores(storage.renameScore(entryId, name));
+      storage.saveLastName(name);
+    },
+    [storage],
   );
 
   const go = (type: Exclude<ScreenAction, 'GAME_OVER'>) => () => {
@@ -176,6 +193,12 @@ export default function App() {
               result={state.outcome.result}
               isRecord={state.outcome.isRecord}
               bestScore={state.outcome.bestScore}
+              position={state.outcome.position}
+              initialName={state.outcome.initialName}
+              onRename={(name) => {
+                const id = state.outcome?.entryId;
+                if (id) handleRename(id, name);
+              }}
               onRestart={go('RESTART')}
               onMenu={go('MENU')}
             />

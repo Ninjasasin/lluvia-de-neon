@@ -37,7 +37,7 @@ export function ScreenCard({ title, children, footer, wide = false }: ScreenCard
   return (
     <div className="relative z-10 flex h-full w-full items-center justify-center p-4">
       <section
-        className={`neon-panel anim-pop flex max-h-full w-full flex-col rounded-3xl ${wide ? 'max-w-4xl' : 'max-w-2xl'}`}
+        className={`neon-panel anim-pop flex max-h-full w-full flex-col rounded-3xl ${wide ? 'max-w-5xl' : 'max-w-2xl'}`}
       >
         <h2 className="neon-title border-b border-electric/25 px-8 py-5 text-3xl font-black">{title}</h2>
         <div className="min-h-0 flex-1 overflow-y-auto px-8 py-6">{children}</div>

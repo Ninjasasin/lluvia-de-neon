@@ -4,7 +4,7 @@ Juego arcade de mecanografía para navegador. Las palabras caen sobre una ciudad
 
 **Jugar en línea:** https://ninjasasin.github.io/lluvia-de-neon/
 
-Todo el arte, el sonido y el código son propios. El nombre se cambia en un solo lugar: `src/config.ts`.
+Creado por **Ninjasasin**. Todo el arte, el sonido y el código del juego son propios. El nombre se cambia en un solo lugar: `src/config.ts`.
 
 ## Instalar y ejecutar
 
@@ -94,6 +94,56 @@ Reactivar Congelar o Ralentizar reinicia su duración; no se acumulan. Relámpag
 - **Multiplicador por racha:** 5 aciertos x1,2 · 10 x1,5 · 20 x2 · 30 o más x3.
 - **Bonificación de nivel:** 100 × el nivel superado, al cerrar la etapa.
 
+### Rangos
+
+Al terminar la partida, la puntuación decide qué eres. La escala tiene 35 rangos y sigue una evolución: de la primera célula a los animales, del troglodita al oficio de escribir, y de ahí al cosmos. La pantalla final muestra el rango con una frase y cuánto falta para el siguiente; la escala completa está en «Mejores puntuaciones».
+
+| # | Rango | Desde |
+|---|---|---|
+| 1 | 🦠 Ameba | 0 |
+| 2 | 🧽 Esponja de mar | 120 |
+| 3 | 🎐 Medusa | 280 |
+| 4 | 🐛 Gusano | 480 |
+| 5 | 🦐 Camarón | 720 |
+| 6 | 🐟 Pez | 1.000 |
+| 7 | 🐸 Rana | 1.350 |
+| 8 | 🐢 Tortuga | 1.750 |
+| 9 | 🦖 Dinosaurio | 2.200 |
+| 10 | 🐔 Gallina | 2.700 |
+| 11 | 🐭 Ratón | 3.200 |
+| 12 | 🐒 Mono con teclado | 3.800 |
+| 13 | 🦴 Troglodita | 4.500 |
+| 14 | 🔥 Inventor del fuego | 5.400 |
+| 15 | 📜 Escriba egipcio | 6.500 |
+| 16 | 🕯️ Monje copista | 7.700 |
+| 17 | 😴 Estudiante con sueño | 9.000 |
+| 18 | ☕ Practicante | 10.500 |
+| 19 | 📎 Oficinista | 12.500 |
+| 20 | ⌨️ Mecanógrafo | 14.500 |
+| 21 | 📰 Periodista | 17.000 |
+| 22 | 📚 Erudito | 20.000 |
+| 23 | 🦉 Sabio | 23.500 |
+| 24 | 🧮 Matemático | 27.500 |
+| 25 | 🧪 Científico loco | 32.000 |
+| 26 | 💡 Genio | 37.000 |
+| 27 | 💻 Hacker | 43.000 |
+| 28 | 🤖 Inteligencia artificial | 50.000 |
+| 29 | 🚀 Astronauta | 58.000 |
+| 30 | 👽 Marciano | 67.000 |
+| 31 | ☄️ Cometa | 77.000 |
+| 32 | 🌟 Supernova | 88.000 |
+| 33 | 🕳️ Agujero negro | 100.000 |
+| 34 | 🌌 Galaxia | 115.000 |
+| 35 | 💥 Big Bang | 135.000 |
+
+Los nombres, las frases y los puntos mínimos se editan en `src/game/ranks.ts`.
+
+### Récords con nombre
+
+El juego guarda las 10 mejores partidas. Cuando una partida entra en la tabla, la pantalla final pide el nombre de quien la jugó (hasta 10 caracteres, en mayúsculas, como en las máquinas de arcade) y lo recuerda para la próxima vez. Si no se escribe nada, queda como «ANÓNIMO».
+
+La tabla vive en el navegador de cada computador: cada persona lleva su propio ranking y no se comparte entre equipos.
+
 ### Dificultad
 
 | Nivel | Caída completa | Aparición | Letras | Simultáneas |
@@ -125,7 +175,8 @@ La lógica del juego no conoce el Canvas, el DOM ni el audio, y por eso se prueb
 
 ```
 src/
-├─ config.ts              Nombre del juego y prefijo de almacenamiento
+├─ config.ts              Nombre del juego, autor y prefijo de almacenamiento
+├─ assets/                Logo del autor
 ├─ App.tsx                Conecta pantallas, audio, guardado y pausa automática
 ├─ state/machine.ts       Máquina de estados: menú, ayuda, configuración, puntuaciones, partida, pausa, fin
 ├─ game/                  LÓGICA (sin dependencias del navegador)
@@ -133,6 +184,7 @@ src/
 │  ├─ difficulty.ts       Parámetros de cada nivel
 │  ├─ scoring.ts          Fórmulas de puntos, multiplicadores, precisión y PPM
 │  ├─ powers.ts           Datos de los cuatro poderes y sus teclas
+│  ├─ ranks.ts            Escala de rangos según la puntuación final
 │  ├─ words.ts            Normalización de texto y banco de palabras
 │  ├─ dictionary.ts       Carga los JSON del diccionario
 │  ├─ storage.ts          Configuración y récords en LocalStorage
@@ -180,13 +232,15 @@ Aparece solo en la configuración, con su miniatura.
 
 ## Pruebas
 
-`npm test` ejecuta 102 pruebas sobre la lógica principal:
+`npm test` ejecuta 132 pruebas sobre la lógica principal:
 
 | Archivo | Qué comprueba |
 |---|---|
 | `tests/engine.test.ts` | Aciertos y errores, tildes y mayúsculas, palabras repetidas, vidas, fin de partida, pausa, reinicio, apariciones sin solapes |
 | `tests/levels.test.ts` | Fin de etapa, resumen del nivel, cuenta regresiva de 5 a 0 y arranque del nivel siguiente |
+| `tests/names.test.ts` | Nombres de la tabla: limpieza, largo máximo, renombrar y último nombre usado |
 | `tests/powers.test.ts` | Los cuatro poderes, límite de inventario, temporizadores en pausa |
+| `tests/ranks.test.ts` | Escala de rangos: orden, límites exactos y avance hacia el siguiente |
 | `tests/scoring.test.ts` | Fórmula de puntos, multiplicadores y rachas |
 | `tests/difficulty.test.ts` | Progresión de niveles y sus límites |
 | `tests/words.test.ts` | Diccionario (más de 1.000 palabras únicas y válidas) y selección de palabras |
